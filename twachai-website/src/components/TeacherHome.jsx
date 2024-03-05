@@ -35,7 +35,7 @@ export default function TeacherHome() {
     addDoc(collection(db, "checkin"), {
       subject: subject,
       room: room,
-      code: code,
+      id: code,
       class_date: date
     }).then(() => {
       console.log("Document successfully written!");

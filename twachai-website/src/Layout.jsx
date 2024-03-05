@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { onAuthStateChanged,  GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
 import { auth } from '../firebase'
 import { Button } from './components/ui/button'
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 export default function Layout({ children }) {
     const [user, setUser] = useState(null)
@@ -42,7 +43,11 @@ export default function Layout({ children }) {
             {user ? (
                 <>
                     สวัสดี <p>{user.displayName}</p>
-                    <img src={user.photoURL} alt={user.displayName} />
+                    <Avatar>
+                        <AvatarImage src={user.photoURL} />
+                        <AvatarFallback>{user.displayName}</AvatarFallback>
+                    </Avatar>
+
                     <Button onClick={Logout}>Logout</Button>
                 </>
             ):(
