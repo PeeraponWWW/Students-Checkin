@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { auth, db } from "../../firebase";
 import { onAuthStateChanged } from "firebase/auth";
-import { collection, query, where, getDocs, updateDoc} from "firebase/firestore"; 
+import { collection, query, where, getDocs, updateDoc, Timestamp} from "firebase/firestore"; 
 import { postToFirebase } from "../../helper";
 
 
@@ -28,10 +28,6 @@ export default function StudentHome() {
             console.error("Student data is not available yet.");
             return;
         }
-        if (code === "") {
-            console.error("Code is empty.");
-            return;
-        }
         let q = query(collection(db, "checkin"), where("id", "==", code));
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
@@ -43,6 +39,7 @@ export default function StudentHome() {
                 let data = postToFirebase({
                     std_id: std.id,
                     name: std.name,
+                    //timestamp format March 5, 2024 at 4:54:06 PM UTC+7
                     checked_date: new Date(),
                     section: std.section
                 })

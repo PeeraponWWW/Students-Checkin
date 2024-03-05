@@ -20,7 +20,7 @@ export const ShowDetail = ({data}) => {
                             <td>{index + 1}</td>
                             <td>{detail.std_id? detail.std_id : ""}</td>
                             <td>{detail.name? detail.name : ""}</td>
-                            <td>{detail.checked_date? detail.checked_date.toDate().toLocaleTimeString(): ""}</td>
+                            <td>{detail.checked_date? new Date(detail.checked_date).toLocaleTimeString(): ""}</td>
                         </tr>
                     )
                 }
@@ -56,14 +56,13 @@ export default function CheckinList({...props}) {
                             <td>{checkin.id}</td>
                             <td>{checkin.class_date.toDate().toLocaleDateString()}</td>
                             <td>
-                                <Button onClick={() => {
-                                    setStdChecked(checkin.checked)
-                                }}>ดูรายชื่อ</Button>
+                                {checkin.checked && <Button onClick={() => setStdChecked(checkin.checked)}>ดูรายละเอียด</Button>}
                             </td>
                         </tr>
                     )
                 }
-                )}
+                )
+            }
                 </tbody>
             </table>
             {stdChecked.length > 0 && <ShowDetail data={stdChecked}/> }

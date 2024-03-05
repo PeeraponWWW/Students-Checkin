@@ -15,4 +15,3 @@ export function postToFirebase(origObj) {
     let newObj = JSON.parse(string);
     return newObj;
   }
-
