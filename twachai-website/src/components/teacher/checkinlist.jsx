@@ -66,7 +66,7 @@ export default function CheckinList({...props}) {
                 )}
                 </tbody>
             </table>
-            {stdChecked && <ShowDetail data={stdChecked}/>}
+            {stdChecked.length > 0 && <ShowDetail data={stdChecked}/> }
         </div>
     );
 }

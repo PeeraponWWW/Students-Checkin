@@ -1,4 +1,4 @@
-export default function makeid(length) {
+export function makeid(length) {
     let result = '';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     const charactersLength = characters.length;
@@ -9,3 +9,10 @@ export default function makeid(length) {
     }
     return result;
 }
+
+export function postToFirebase(origObj) {
+    let string = JSON.stringify(origObj);
+    let newObj = JSON.parse(string);
+    return newObj;
+  }
+

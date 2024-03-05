@@ -25,6 +25,7 @@ export default function Layout({ children }) {
     const Logout = () => {
         signOut(auth).then(() => {
             setUser(null)
+            window.location.reload()
         }).catch((error) => {
             console.log(error)
         });

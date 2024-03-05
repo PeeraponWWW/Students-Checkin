@@ -21,7 +21,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import makeid from "../../helper"
+import { makeid } from "../../helper"
 import { db } from "../../firebase"
 import { collection ,addDoc, doc, onSnapshot  } from "firebase/firestore";
 import CheckinList from "./teacher/checkinlist";
