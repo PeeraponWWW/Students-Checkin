@@ -23,10 +23,14 @@ import {
 } from "@/components/ui/popover"
 import makeid from "../../helper"
 import { db } from "../../firebase"
-import { collection ,addDoc } from "firebase/firestore";
+import { collection ,addDoc, doc, onSnapshot  } from "firebase/firestore";
+import CheckinList from "./teacher/checkinlist";
 
 
 export default function TeacherHome() {
+  //Data
+  const [checkin, setCheckin] = useState([])
+  //Form Data
   const [subject, setSubject] = useState("") 
   const [room, setRoom] = useState("")
   const [code, setCode] = useState(makeid(5))
@@ -45,6 +49,15 @@ export default function TeacherHome() {
       setDate(new Date())
     }).catch((error) => {
       console.error("Error writing document: ", error);
+    });
+  }
+  const handlegetcheckin = () => {
+    onSnapshot(collection(db, "checkin"), (querySnapshot) => {
+      let temp = []
+      querySnapshot.forEach((doc) => {
+        temp.push(doc.data())
+      });
+      setCheckin(temp)
     });
   }
   return (
@@ -131,6 +144,10 @@ export default function TeacherHome() {
         </DialogFooter>
       </DialogContent>
     </Dialog>
+
+    <Button onClick={handlegetcheckin}>แสดงรายการเช็คชื่อ</Button>
+
+    {checkin.length > 0 && <CheckinList checkin={checkin}/>}
     </div>
   );
 }
