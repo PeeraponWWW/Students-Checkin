@@ -23,6 +23,7 @@ import { postToFirebase } from "../../helper";
 export default function StudentHome() {
     const [code, setCode] = useState("")
     const [stddata, setStddata] = useState(null)
+    const [roomdata, setRoomdata] = useState(null)
     const [haveroom, setHaveroom] = useState(null)
 
     const handleCheckin = async () => {
@@ -49,6 +50,7 @@ export default function StudentHome() {
                     { checked }
                 ).then(() => {
                     console.log("Document successfully updated!");
+                    setRoomdata(room)
                     setHaveroom(true)
                 }).catch((error) => {
                     setHaveroom(false)
@@ -111,14 +113,15 @@ export default function StudentHome() {
       </DialogContent>
     </Dialog>
 
-    {haveroom ? (<Alert variant="success">
-    <Terminal className="h-4 w-4" />
-      <AlertTitle>เช็คชื่อสำเร็จ</AlertTitle>
-      <AlertDescription>
-        ขอบคุณที่เข้าเรียน
-      </AlertDescription>
-    </Alert>
-    ):(
+    {haveroom ? (
+      <Alert variant="success">
+        <Terminal className="h-4 w-4" />
+        <AlertTitle>เช็คชื่อสำเร็จ</AlertTitle>
+        <AlertDescription>
+          ขอบคุณที่เข้าเรียน วิชา {roomdata.subject} ห้อง {roomdata.room} วันที่ {roomdata.date} เข้าเรียนเวลา {new Date().toLocaleTimeString()}
+        </AlertDescription>
+      </Alert>
+    ) : (
       haveroom === false && <Alert variant="destructive">
       <Terminal className="h-4 w-4" />
         <AlertTitle>เช็คชื่อไม่สำเร็จ</AlertTitle>
