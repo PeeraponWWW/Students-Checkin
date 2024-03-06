@@ -5,6 +5,8 @@ import { onAuthStateChanged } from "firebase/auth";
 import Layout from "../Layout";
 import StudentHome from "@/components/StudentHome";
 import TeacherHome from "@/components/TeacherHome";
+import NotFound from "@/components/NotFound";
+import NotLogin from "@/components/NotLogin";
 
 export default function Home() {
   const [isStdORTc, setIsStdORTc] = useState(null)
@@ -16,6 +18,7 @@ export default function Home() {
         getDocs(q).then((querySnapshot) => {
           if(querySnapshot.size > 0){
             setIsStdORTc("student")
+            return;
           }
         }).catch((error) => {
           console.log("Error getting documents: ", error);
@@ -24,17 +27,19 @@ export default function Home() {
         getDocs(q).then((querySnapshot) => {
           if(querySnapshot.size > 0){
             setIsStdORTc("teacher")
+            return;
           }
         }).catch((error) => {
           console.log("Error getting documents: ", error);
         });
+        setIsStdORTc("unknown")
       }
     });
   }, [])
   return (
     <Layout>
-      <div className="container sm:px-2">
-        {isStdORTc === "student" ? <StudentHome/> : isStdORTc === "teacher" ? <TeacherHome/> : isStdORTc === null && <h1>Not found</h1>}
+      <div>
+        {isStdORTc === "student" ? <StudentHome/> : isStdORTc === "teacher" ? <TeacherHome/> : isStdORTc === "unknown" ? <NotFound/> : <NotLogin/>}
       </div>
     </Layout>
   );

@@ -39,23 +39,34 @@ export default function Layout({ children }) {
         });
     }, [])
     return (
-        <div>
-            <h1>Header</h1>
-            {user ? (
-                <>
-                    สวัสดี <p>{user.displayName}</p>
-                    <Avatar>
-                        <AvatarImage src={user.photoURL} />
-                        <AvatarFallback>{user.displayName}</AvatarFallback>
-                    </Avatar>
+        <div className='page-home'>
+            <div id='header' className='container py-4 sm:px-4'>
+                <div className='flex justify-between items-center justify-items-center'>
+                    <h1 className='font-bold text-2xl'>Students Checkin</h1>
+                    <div className='flex gap-4 items-center justify-items-center'>
+                    {user ? (
+                    <>
+                        <p>สวัสดี {user.displayName}</p>
+                        <Avatar>
+                            <AvatarImage src={user.photoURL} />
+                            <AvatarFallback>{user.displayName}</AvatarFallback>
+                        </Avatar>
 
-                    <Button onClick={Logout}>Logout</Button>
-                </>
-            ):(
-                <Button onClick={Login}>Login</Button>
-            )}
+                        <Button onClick={Logout}>Logout</Button>
+                    </>
+                ):(
+                    <Button onClick={Login}>Login</Button>
+                )}
+                    </div>
+                </div>
+    
+            </div>
+            <div id='content' className='container sm:px-4 my-4'>
                 {children}
-            <h1>Footer</h1>
+            </div>
+            {/* <div id='footer' className='container sm:px-4'>
+                 <h1>Footer</h1>
+            </div> */}
         </div>
     )
 }
