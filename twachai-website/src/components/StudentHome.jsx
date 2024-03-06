@@ -26,6 +26,7 @@ import {
   Timestamp,
 } from "firebase/firestore";
 import { postToFirebase } from "../../helper";
+import { hostname } from "../../config";
 
 export default function StudentHome() {
   const [searchParams] = useSearchParams();
@@ -96,6 +97,10 @@ export default function StudentHome() {
             console.log("Document successfully updated!");
             setRoomdata(room);
             setHaveroom(true);
+            if (searchParams.has('checkin')) {
+              searchParams.delete('checkin');
+              window.history.replaceState({}, '', `${hostname}`);
+            }
           })
           .catch((error) => {
             setHaveroom(false);
