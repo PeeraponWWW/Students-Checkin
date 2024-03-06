@@ -30,7 +30,6 @@ import { postToFirebase } from "../../helper";
 export default function StudentHome() {
   const [searchParams] = useSearchParams();
   const [checkin, setCheckin] = useState(searchParams.get('checkin'));
-  console.log(checkin);
 
   const [code, setCode] = useState("");
   const [stddata, setStddata] = useState(null);
@@ -138,9 +137,9 @@ export default function StudentHome() {
   }
   }, [checkin, stddata]);
   return (
-    <div className="min-h-dvh flex flex-col space-x-4">
-      <h1 className="text-center text-lg">สำหรับนักเรียน/นักศึกษา</h1>
-      <div>
+    <div className="min-h-dvh">
+      <h1 className="mb-4 text-center text-lg">สำหรับนักเรียน/นักศึกษา</h1>
+      <div className="mb-4">
         <Dialog>
           <DialogTrigger asChild>
             <Button variant="outline">เช็คชื่อเข้าเรียน</Button>

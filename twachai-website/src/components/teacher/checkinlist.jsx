@@ -1,8 +1,10 @@
 import { useState } from "react";
+import QRCode from "react-qr-code";
 import { Button } from "../ui/button";
 import { DialogForm } from "./DialogForm";
 import { db } from "../../../firebase"
 import { collection ,query, where, getDocs, deleteDoc } from "firebase/firestore";
+import { ShowQR } from "./ShowQR";
 
 export const ShowDetail = ({data}) => {
     return (
@@ -63,6 +65,7 @@ export default function CheckinList({...props}) {
                                 {checkin.checked && <Button onClick={() => setStdChecked(checkin.checked)}>การเข้าเรียน</Button>}
                             </td>
                             <td><Button>ถาม-ตอบ</Button></td>
+                            <td><ShowQR code={checkin.id}/></td>
                             <td><DialogForm
                                 title="แก้ไข"
                                 des="แก้ไขรายการเช็คชื่อ"
