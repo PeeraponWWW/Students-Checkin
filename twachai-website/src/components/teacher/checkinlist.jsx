@@ -1,88 +1,100 @@
 import { useState } from "react";
-import QRCode from "react-qr-code";
 import { Button } from "../ui/button";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
 import { DialogForm } from "./DialogForm";
-import { db } from "../../../firebase"
-import { collection ,query, where, getDocs, deleteDoc } from "firebase/firestore";
 import { ShowQR } from "./ShowQR";
 
-export const ShowDetail = ({data}) => {
-    return (
-        <div>
-            <table>
-                <thead>
-                <tr>
-                    <th>ลำดับ</th>
-                    <th>รหัสนักศึกษา</th>
-                    <th>ชื่อ</th>
-                    <th>เวลาเข้า</th>
-                </tr>
-                </thead>
-                <tbody>
-                {data.map((detail, index) => {
-                    return (
-                        <tr key={index}>
-                            <td>{index + 1}</td>
-                            <td>{detail.std_id? detail.std_id : ""}</td>
-                            <td>{detail.name? detail.name : ""}</td>
-                            <td>{detail.checked_date? new Date(detail.checked_date).toLocaleTimeString(): ""}</td>
-                        </tr>
-                    )
-                }
-                )}
-                </tbody>
-            </table>
-        </div>
-    )
-}
+export const ShowDetail = ({ data }) => {
+  return (
+    <div>
+        <h1 className="text-xl font-bold">การเข้าเรียนวิชา: {data.subject}</h1>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-[100px]">ลำดับ</TableHead>
+            <TableHead>รหัสนักศึกษา</TableHead>
+            <TableHead>ชื่อ</TableHead>
+            <TableHead>เวลาเช็คชื่อ</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+        {data.checked.map((detail, index) => {
+            return (
+              <TableRow key={index}>
+                <TableCell>{index + 1}</TableCell>
+                <TableCell>{detail.std_id ? detail.std_id : ""}</TableCell>
+                <TableCell>{detail.name ? detail.name : ""}</TableCell>
+                <TableCell>
+                  {detail.checked_date
+                    ? new Date(detail.checked_date).toLocaleTimeString()
+                    : ""}
+                </TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
+    </div>
+  );
+};
 
-export default function CheckinList({...props}) {
-    const [stdChecked, setStdChecked] = useState([])
+export default function CheckinList({ ...props }) {
+  const [stdChecked, setStdChecked] = useState({});
 
-    return (
-        <div>
-            <h1>CheckinList</h1>
-            <table>
-                <thead>
-                <tr>
-                    <th>ลำดับ</th>
-                    <th>วิชา</th>
-                    <th>ห้อง</th>
-                    <th>รหัสห้อง</th>
-                    <th>วันที่</th>
-                </tr>
-                </thead>
-                <tbody>
-                {props.checkin.map((checkin, index) => {
-                    return (
-                        <tr key={index}>
-                            <td>{index + 1}</td>
-                            <td>{checkin.subject}</td>
-                            <td>{checkin.room}</td>
-                            <td>{checkin.id}</td>
-                            <td>{checkin.class_date.toDate().toLocaleDateString()}</td>
-                            <td>
-                                {checkin.checked && <Button onClick={() => setStdChecked(checkin.checked)}>การเข้าเรียน</Button>}
-                            </td>
-                            <td><Button>ถาม-ตอบ</Button></td>
-                            <td><ShowQR code={checkin.id}/></td>
-                            <td><DialogForm
-                                title="แก้ไข"
-                                des="แก้ไขรายการเช็คชื่อ"
-                                subject={checkin.subject}
-                                room={checkin.room}
-                                code={checkin.id}
-                                date={checkin.class_date.toDate()}
-                            />
-                            </td>
-                        </tr>
-                    )
-                }
-                )
-            }
-                </tbody>
-            </table>
-            {stdChecked.length > 0 && <ShowDetail data={stdChecked}/> }
-        </div>
-    );
+  return (
+    <div>
+        <h1 className="text-xl font-bold">รายการเช็คชื่อ</h1>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-[100px]">ลำดับ</TableHead>
+            <TableHead>วิชา</TableHead>
+            <TableHead>ห้องเรียน</TableHead>
+            <TableHead>วันที่</TableHead>
+            <TableHead className="text-right">Action</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {props.checkin.map((checkin, index) => {
+            return (
+              <TableRow key={index}>
+                <TableCell className="font-medium">{index + 1}</TableCell>
+                <TableCell>{checkin.subject}</TableCell>
+                <TableCell>{checkin.room}</TableCell>
+                <TableCell>{checkin.class_date.toDate().toLocaleDateString()}</TableCell>
+                <TableCell className="text-right">
+                  {checkin.checked && (
+                    <Button onClick={() => setStdChecked({checked: checkin.checked, subject: checkin.subject})}>
+                      การเข้าเรียน
+                    </Button>
+                  )}
+                  <Button>ถาม-ตอบ</Button>
+                  <ShowQR code={checkin.id} />
+                  <DialogForm
+                    title="แก้ไข"
+                    des="แก้ไขรายการเช็คชื่อ"
+                    subject={checkin.subject}
+                    room={checkin.room}
+                    code={checkin.id}
+                    date={checkin.class_date.toDate()}
+                  />
+                </TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
+      {stdChecked && <ShowDetail data={stdChecked} />}
+      
+    </div>
+  );
 }

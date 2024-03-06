@@ -31,10 +31,12 @@ export default function TeacherHome() {
   }, [])
  
   return (
-    <div>
-      <h1>Teacher Home</h1>
-      <DialogForm title="เพิ่มเช็คชื่อ" des="เพิ่มรายการเช็คชื่อใหม่" email={user.email} name={user.displayName}/>
-      <Button onClick={handlegetcheckin}>แสดงรายการเช็คชื่อ</Button>
+    <div className="min-h-dvh">
+      <h1 className="mb-4 text-center text-lg">สำหรับครู/อาจารย์</h1>
+      <div className="mb-4 flex gap-4">
+        <DialogForm title="เพิ่มเช็คชื่อ" des="เพิ่มรายการเช็คชื่อใหม่" email={user.email} name={user.displayName}/>
+        <Button onClick={handlegetcheckin}>แสดงรายการเช็คชื่อ</Button>
+      </div>
       {checkin.length > 0 && <CheckinList checkin={checkin}/>}
     </div>
   );
