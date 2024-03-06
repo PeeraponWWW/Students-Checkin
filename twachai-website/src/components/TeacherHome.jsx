@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
 import { db, auth } from "../../firebase"
-import { collection , onSnapshot  } from "firebase/firestore";
+import { collection , onSnapshot, where, query  } from "firebase/firestore";
 import CheckinList from "./teacher/checkinlist";
 import { DialogForm } from "./teacher/DialogForm";
 import { onAuthStateChanged } from "firebase/auth";
@@ -11,13 +11,28 @@ export default function TeacherHome() {
   const [user, setUser] = useState({email: "", displayName: ""})
   
   const handlegetcheckin = () => {
-    onSnapshot(collection(db, "checkin"), (querySnapshot) => {
-      let temp = []
-      querySnapshot.forEach((doc) => {
-        temp.push(doc.data())
-      });
-      setCheckin(temp)
-    });
+    // onSnapshot(collection(db, "checkin"), (querySnapshot) => {
+    //   let temp = []
+    //   querySnapshot.forEach((doc) => {
+    //     temp.push(doc.data())
+    //   });
+    //   setCheckin(temp)
+    // });
+
+    onSnapshot(
+      query(
+        collection(db, "checkin"),
+        where("teacher_email", "==", user.email)
+      ),
+      (querySnapshot) => {
+        let temp = [];
+        querySnapshot.forEach((doc) => {
+          temp.push(doc.data());
+        });
+        setCheckin(temp)
+      }
+    );
+
   }
 
   useEffect(() => {
