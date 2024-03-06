@@ -20,11 +20,8 @@ export default function TeacherHome() {
   return (
     <div>
       <h1>Teacher Home</h1>
-
     <DialogForm title="เพิ่มเช็คชื่อ" des="เพิ่มรายการเช็คชื่อใหม่"/>
-
     <Button onClick={handlegetcheckin}>แสดงรายการเช็คชื่อ</Button>
-
     {checkin.length > 0 && <CheckinList checkin={checkin}/>}
     </div>
   );
