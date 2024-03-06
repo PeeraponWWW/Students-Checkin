@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Terminal } from "lucide-react"
 import { format, set } from "date-fns"
 import { Calendar as CalendarIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -21,6 +22,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { makeid } from "../../../helper"
 import { db } from "../../../firebase"
 import { collection ,addDoc, doc, updateDoc, where, deleteDoc, query, getDocs  } from "firebase/firestore";
@@ -30,13 +32,16 @@ export function DialogForm({...props}) {
     const [room, setRoom] = useState("")
     const [code, setCode] = useState(makeid(5))
     const [date, setDate] = useState(new Date())
+    const [alert, setAlert] = useState(false)
   
     const handlesavecheckin = () => {
       addDoc(collection(db, "checkin"), {
         subject: subject,
         room: room,
         id: code,
-        class_date: date
+        class_date: date,
+        teacher_email: props.email,
+        teacher_name: props.name
       }).then(() => {
         console.log("Document successfully written!");
         setSubject("")
@@ -48,22 +53,31 @@ export function DialogForm({...props}) {
       });
     }
     //updatebycode
-    const handleupdatecheckin = () => {
-        const q = where("id", "==", code)
-        updateDoc(doc(db, "checkin", q), {
-            subject: subject,
-            room: room,
-            class_date: date
-        }).then(() => {
-            console.log("Document successfully updated!");
-            setSubject("")
-            setRoom("")
-            setCode(makeid(5))
-            setDate(new Date())
-        }).catch((error) => {
+    const handleupdatecheckin = async () => {
+        try {
+            const q = query(collection(db, "checkin"), where("id", "==", code));
+            const querySnapshot = await getDocs(q);
+            
+            querySnapshot.forEach((docs) => {
+                updateDoc(doc(db, "checkin", docs.id), {
+                    subject: subject,
+                    room: room,
+                    class_date: date
+                }).then(() => {
+                    console.log("Document successfully updated!");
+                    setAlert(true)
+                    setSubject("");
+                    setRoom("");
+                    setCode(makeid(5));
+                    setDate(new Date());
+                }).catch((error) => {
+                    console.error("Error updating document: ", error);
+                });
+            });
+        } catch (error) {
             console.error("Error updating document: ", error);
-        });
         }
+    }
         //deletebycode
     const handledeletecheckin = async (code) => {
         const q = query(collection(db, "checkin"), where("id", "==", code));
@@ -172,6 +186,13 @@ export function DialogForm({...props}) {
         </PopoverContent>
       </Popover>
             </div>
+            {alert && <Alert variant="success">
+                <Terminal className="h-4 w-4" />
+                <AlertTitle>แก้ไขรายการเช็คชื่อสำเร็จ</AlertTitle>
+              <AlertDescription>
+                รายการเช็คชื่อได้รับการแก้ไขเรียบร้อยแล้ว
+              </AlertDescription>
+              </Alert>}
           </div>
           <DialogFooter>
             <DialogClose asChild>
