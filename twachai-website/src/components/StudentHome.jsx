@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Terminal } from "lucide-react"
 import { Button } from "./ui/button";
 import {
   Dialog,
@@ -12,6 +13,7 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { auth, db } from "../../firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { collection, query, where, getDocs, updateDoc, Timestamp} from "firebase/firestore"; 
@@ -21,7 +23,7 @@ import { postToFirebase } from "../../helper";
 export default function StudentHome() {
     const [code, setCode] = useState("")
     const [stddata, setStddata] = useState(null)
-    const [haveroom, setHaveroom] = useState(false)
+    const [haveroom, setHaveroom] = useState(null)
 
     const handleCheckin = async () => {
         if (!stddata) {
@@ -34,7 +36,6 @@ export default function StudentHome() {
             if(doc.exists()){
                 let room = doc.data()
                 let std = stddata
-                console.log(std)
                 let checked = room.checked? room.checked : []
                 let data = postToFirebase({
                     std_id: std.id,
@@ -50,10 +51,15 @@ export default function StudentHome() {
                     console.log("Document successfully updated!");
                     setHaveroom(true)
                 }).catch((error) => {
+                    setHaveroom(false)
                     console.error("Error updating document: ", error);
                 });
             }
-        });
+        }
+        );
+        if(querySnapshot.size === 0){
+            setHaveroom(false)
+        }
 }
 
     useEffect(() => {
@@ -63,7 +69,6 @@ export default function StudentHome() {
                 getDocs(q).then((querySnapshot) => {
                     querySnapshot.forEach((doc) => {
                         setStddata(doc.data())
-                        console.log(stddata)
                     });
                 }).catch((error) => {
                     console.log("Error getting documents: ", error);
@@ -105,6 +110,24 @@ export default function StudentHome() {
         </DialogFooter>
       </DialogContent>
     </Dialog>
+
+    {haveroom ? (<Alert variant="success">
+    <Terminal className="h-4 w-4" />
+      <AlertTitle>เช็คชื่อสำเร็จ</AlertTitle>
+      <AlertDescription>
+        ขอบคุณที่เข้าเรียน
+      </AlertDescription>
+    </Alert>
+    ):(
+      haveroom === false && <Alert variant="destructive">
+      <Terminal className="h-4 w-4" />
+        <AlertTitle>เช็คชื่อไม่สำเร็จ</AlertTitle>
+        <AlertDescription>
+          กรุณาตรวจสอบรหัสห้องและลองใหม่อีกครั้ง
+        </AlertDescription>
+      </Alert>
+    )
+      }
     </div>
   );
 }
