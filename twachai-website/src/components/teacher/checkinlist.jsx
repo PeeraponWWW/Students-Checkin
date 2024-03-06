@@ -56,8 +56,10 @@ export default function CheckinList({...props}) {
                             <td>{checkin.id}</td>
                             <td>{checkin.class_date.toDate().toLocaleDateString()}</td>
                             <td>
-                                {checkin.checked && <Button onClick={() => setStdChecked(checkin.checked)}>ดูรายละเอียด</Button>}
+                                {checkin.checked && <Button onClick={() => setStdChecked(checkin.checked)}>การเข้าเรียน</Button>}
                             </td>
+                            <td><Button>ถาม-ตอบ</Button></td>
+                            <td><Button>แก้ไข</Button></td>
                         </tr>
                     )
                 }
