@@ -118,7 +118,7 @@ export default function StudentHome() {
         <Terminal className="h-4 w-4" />
         <AlertTitle>เช็คชื่อสำเร็จ</AlertTitle>
         <AlertDescription>
-          ขอบคุณที่เข้าเรียน วิชา {roomdata.subject} ห้อง {roomdata.room} วันที่ {roomdata.date} เข้าเรียนเวลา {new Date().toLocaleTimeString()}
+          ขอบคุณที่เข้าเรียน วิชา {roomdata.subject} ห้อง {roomdata.room} วันที่ {roomdata.date} เข้าเรียนเวลา {new Date().toLocaleTimeString()} สอนโดย {roomdata.teacher_name}
         </AlertDescription>
       </Alert>
     ) : (
