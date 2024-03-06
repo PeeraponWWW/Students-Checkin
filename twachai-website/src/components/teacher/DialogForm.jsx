@@ -1,0 +1,189 @@
+import { useEffect, useState } from "react";
+import { format, set } from "date-fns"
+import { Calendar as CalendarIcon } from "lucide-react"
+import { cn } from "@/lib/utils"
+import { Button } from "../ui/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Calendar } from "@/components/ui/calendar"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+import { makeid } from "../../../helper"
+import { db } from "../../../firebase"
+import { collection ,addDoc, doc, updateDoc, where, deleteDoc, query, getDocs  } from "firebase/firestore";
+
+export function DialogForm({...props}) {
+    const [subject, setSubject] = useState(""); 
+    const [room, setRoom] = useState("")
+    const [code, setCode] = useState(makeid(5))
+    const [date, setDate] = useState(new Date())
+  
+    const handlesavecheckin = () => {
+      addDoc(collection(db, "checkin"), {
+        subject: subject,
+        room: room,
+        id: code,
+        class_date: date
+      }).then(() => {
+        console.log("Document successfully written!");
+        setSubject("")
+        setRoom("")
+        setCode(makeid(5))
+        setDate(new Date())
+      }).catch((error) => {
+        console.error("Error writing document: ", error);
+      });
+    }
+    //updatebycode
+    const handleupdatecheckin = () => {
+        const q = where("id", "==", code)
+        updateDoc(doc(db, "checkin", q), {
+            subject: subject,
+            room: room,
+            class_date: date
+        }).then(() => {
+            console.log("Document successfully updated!");
+            setSubject("")
+            setRoom("")
+            setCode(makeid(5))
+            setDate(new Date())
+        }).catch((error) => {
+            console.error("Error updating document: ", error);
+        });
+        }
+        //deletebycode
+    const handledeletecheckin = async (code) => {
+        const q = query(collection(db, "checkin"), where("id", "==", code));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+            if(doc.exists()){
+                deleteDoc(doc.ref).then(() => {
+                    console.log("Document successfully deleted!");
+                }).catch((error) => {
+                    console.error("Error removing document: ", error);
+                });
+            }
+        });
+    }
+
+    useEffect(() => {
+      if(props.subject){
+        setSubject(props.subject)
+      }
+      if(props.room){
+        setRoom(props.room)
+      }
+      if(props.code){
+        setCode(props.code)
+      }
+      if(props.date){
+        setDate(props.date)
+      }
+    }, [props.subject, props.room, props.code, props.date])
+    return (
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button variant="outline">{props.title}</Button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>{props.title}</DialogTitle>
+            <DialogDescription>
+              {props.des}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="subject" className="text-right">
+                วิชา
+              </Label>
+              <Input
+                id="subject"
+                defaultValue={subject}
+                className="col-span-3"
+                onChange={(e) => setSubject(e.target.value)}
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="room" className="text-right">
+                ห้อง
+              </Label>
+              <Input
+                id="room"
+                defaultValue={room}
+                className="col-span-3"
+                onChange={(e) => setRoom(e.target.value)}
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="code" className="text-right">
+                รหัสห้อง
+              </Label>
+              {props.title === "เพิ่มเช็คชื่อ" ? <Input
+                id="code"
+                defaultValue={code}
+                className="col-span-3"
+                onChange={(e) => setCode(e.target.value)}
+                /> : <Input
+                id="code"
+                defaultValue={code}
+                className="col-span-3"
+                disabled
+                />}
+            
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="date" className="text-right">
+                วันที่
+              </Label>
+            <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            variant={"outline"}
+            className={cn(
+              "w-[280px] justify-start text-left font-normal",
+              !date && "text-muted-foreground"
+            )}
+          >
+            <CalendarIcon className="mr-2 h-4 w-4" />
+            {date ? format(date, "PPP") : <span>Pick a date</span>}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0">
+          <Calendar
+            mode="single"
+            selected={date}
+            onSelect={setDate}
+            initialFocus
+          />
+        </PopoverContent>
+      </Popover>
+            </div>
+          </div>
+          <DialogFooter>
+            <DialogClose asChild>
+                {props.title === "เพิ่มเช็คชื่อ" ? <Button type="button" onClick={handlesavecheckin}>เช็คชื่อ</Button> : (
+                    <>
+                        <Button onClick={handleupdatecheckin} type="button">แก้ไข</Button>
+                        <Button onClick={()=>handledeletecheckin(code)} type="button" >ลบ</Button>
+                    </>
+                )}
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    )
+}

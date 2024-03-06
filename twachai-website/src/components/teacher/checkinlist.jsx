@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { Button } from "../ui/button";
+import { DialogForm } from "./DialogForm";
+import { db } from "../../../firebase"
+import { collection ,query, where, getDocs, deleteDoc } from "firebase/firestore";
 
 export const ShowDetail = ({data}) => {
     return (
@@ -33,6 +36,7 @@ export const ShowDetail = ({data}) => {
 
 export default function CheckinList({...props}) {
     const [stdChecked, setStdChecked] = useState([])
+
     return (
         <div>
             <h1>CheckinList</h1>
@@ -59,7 +63,15 @@ export default function CheckinList({...props}) {
                                 {checkin.checked && <Button onClick={() => setStdChecked(checkin.checked)}>การเข้าเรียน</Button>}
                             </td>
                             <td><Button>ถาม-ตอบ</Button></td>
-                            <td><Button>แก้ไข</Button></td>
+                            <td><DialogForm
+                                title="แก้ไข"
+                                des="แก้ไขรายการเช็คชื่อ"
+                                subject={checkin.subject}
+                                room={checkin.room}
+                                code={checkin.id}
+                                date={checkin.class_date.toDate()}
+                            />
+                            </td>
                         </tr>
                     )
                 }
