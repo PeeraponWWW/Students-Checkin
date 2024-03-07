@@ -161,7 +161,7 @@ export default function StudentHome() {
         {haveroom ? (
           <div></div>
         ):(
-          <>
+          <div className="flex gap-2">
           <Dialog>
           <DialogTrigger asChild>
             <Button variant="outline">เช็คชื่อเข้าเรียน</Button>
@@ -229,7 +229,7 @@ export default function StudentHome() {
             </DialogFooter>
           </DialogContent>
         </Dialog>
-        </>
+        </div>
         )}
         
       </div>

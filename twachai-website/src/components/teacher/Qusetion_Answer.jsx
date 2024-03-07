@@ -72,6 +72,7 @@ function TextInput({value , onChange}){
                 }
             }
             type="text"
+            placeholder="ป้อนคำถาม-คำตอบของคุณ"
         />
     )
 }

@@ -75,6 +75,7 @@ export default function CheckinList({ ...props }) {
     <div>
       <h1 className="text-xl font-bold">รายการเช็คชื่อ</h1>
       <Table>
+      <TableCaption>แสดงรายการเช็คชื่อ</TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead className="w-[100px]">ลำดับ</TableHead>
@@ -96,11 +97,8 @@ export default function CheckinList({ ...props }) {
                 <TableCell>
                   {checkin.class_date.toDate().toLocaleDateString()}
                 </TableCell>
-                <TableCell className="text-right">
+                <TableCell className="text-right flex gap-2 flex-wrap justify-end">
                   {checkin.checked && (
-                    // <Button >
-                    //   การเข้าเรียน
-                    // </Button>
                     <ShowDetail
                       onClick={() => {
                         setStdChecked({
@@ -114,7 +112,6 @@ export default function CheckinList({ ...props }) {
                       }}
                     />
                   )}
-                  {/* <Button>ถาม-ตอบ</Button> */}
                   <DrawerComment roomId={checkin.id} />
                   <ShowQR code={checkin.id} />
                   <DialogForm

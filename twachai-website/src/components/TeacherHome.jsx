@@ -13,6 +13,11 @@ export default function TeacherHome() {
   const [user, setUser] = useState({email: "", displayName: ""})
   const [student,setStudent] = useState([])
   const [teacher,setTeacher] = useState([])
+
+  const [loading, setLoading] = useState(true)
+  const [checkinopen, setCheckinopen] = useState(false)
+  const [studentopen, setStudentopen] = useState(false)
+  const [teacheropen, setTeacheropen] = useState(false)
   
   const handlegetcheckin = () => {
     // onSnapshot(collection(db, "checkin"), (querySnapshot) => {
@@ -72,13 +77,35 @@ onSnapshot(collection(db, "students"), (querySnapshot) => {
       <h1 className="mb-4 text-center text-lg">สำหรับครู/อาจารย์</h1>
       <div className="mb-4 flex gap-4 flex-wrap">
         <DialogForm title="เพิ่มเช็คชื่อ" des="เพิ่มรายการเช็คชื่อใหม่" email={user.email} name={user.displayName}/>
-        <Button onClick={handlegetcheckin}>แสดงรายการเช็คชื่อ</Button>
-        <Button onClick={handlegetallStudent}>แสดงรายการนักเรียน/นักศึกษา</Button>
-        <Button onClick={handlegetallTeacher}>แสดงรายการอาจาารย์</Button>
+        <Button onClick={() => {
+          if(!checkin.length>0){
+            handlegetcheckin()
+          }
+          setCheckinopen(true)
+          setStudentopen(false)
+          setTeacheropen(false)
+        }
+          }>แสดงรายการเช็คชื่อ</Button>
+        <Button onClick={()=>{
+          if(!student.length>0){
+            handlegetallStudent()
+          }
+          setStudentopen(true)
+          setCheckinopen(false)
+          setTeacheropen(false)
+        }}>แสดงรายการนักเรียน/นักศึกษา</Button>
+        <Button onClick={()=>{
+          if(!teacher.length>0){
+            handlegetallTeacher()
+          }
+          setTeacheropen(true)
+          setCheckinopen(false)
+          setStudentopen(false)
+        }}>แสดงรายการอาจาารย์</Button>
       </div>
-      {checkin.length > 0 && <CheckinList checkin={checkin}/>}
-      {student.length>0 && <Showallstudent student={student}/>}
-      {teacher.length>0 && <ShowallTeacher teacher={teacher}/>}
+      {checkinopen && checkin.length > 0 && <CheckinList checkin={checkin}/>}
+      {studentopen && student.length>0 && <Showallstudent student={student}/>}
+      {teacheropen && teacher.length>0 && <ShowallTeacher teacher={teacher}/>}
     </div>
   );
 }
