@@ -36,7 +36,7 @@ export default function DrawerComment({roomId}){
         <Drawer>
             <DrawerTrigger asChild ><Button className="inline-block" onClick={handelQuereyListCommnet}>ถาม-ตอบ</Button></DrawerTrigger>
             <DrawerContent>
-                <div className="max-h-[98dvh] py-2 px-5">
+                <div className="h-[95dvh] py-2 px-5">
                     <div className="w-100">
                         <DrawerHeader>
                             <DrawerTitle><p className="text-[24px] mb-2">ถาม-ตอบ</p></DrawerTitle>
@@ -50,7 +50,7 @@ export default function DrawerComment({roomId}){
                                     <h4>ไม่มีคอมเมนต์</h4>
                                 </div>
                             ) : (
-                                <div className="h-[75dvh] overflow-y-auto">
+                                <div className="h-[60dvh] overflow-y-auto">
                                     {
                                         lCommnet[0].map((cm, index) =>
                                             <div key={index} className="bg-slate-100 p-2 mb-4 rounded-sm">
