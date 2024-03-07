@@ -45,7 +45,13 @@ export default function DrawerComment({roomId}){
                     </div>
                     <div className="w-100 px-4">
                         {
-                            lCommnet.length > 0 ? (
+                            lCommnet.length < 1 || lCommnet[0] == undefined || lCommnet == undefined || lCommnet == null  ? (
+                                <div>
+                                    <h4>ไม่มีคอมเมนต์</h4>
+                                </div>
+                            ) : (
+                                console.log(lCommnet),
+                                console.log(roomId),
                                 <div className="h-[75dvh] overflow-y-auto">
                                     {
                                         lCommnet[0].map((cm, index) =>
@@ -57,13 +63,9 @@ export default function DrawerComment({roomId}){
                                         )
                                     }
                                 </div>
-                            ) : (
-                                <div>
-                                    <h4>ไม่มีคอมเมนต์</h4>
-                                </div>
                             )
                         }
-                        <Qusetion_Answer listComment={lCommnet} roomId={roomId}/>
+                        <Qusetion_Answer roomId={roomId}/>
                         <DrawerFooter>
                             <DrawerClose asChild>
                                 <Button variant="outline">ปิด</Button>

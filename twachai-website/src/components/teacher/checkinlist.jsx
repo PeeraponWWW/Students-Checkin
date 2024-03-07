@@ -9,45 +9,62 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
 import { DialogForm } from "./DialogForm";
 import { ShowQR } from "./ShowQR";
-
-
-// Drawer Q & A 
 import DrawerComment from "./DrawerComment";
 
 export const ShowDetail = ({ data }) => {
   return (
-    <div>
-        <h1 className="text-xl font-bold">การเข้าเรียนวิชา: {data.subject}</h1>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[100px]">ลำดับ</TableHead>
-            <TableHead>รหัสนักศึกษา</TableHead>
-            <TableHead>ชื่อ</TableHead>
-            <TableHead>เวลาเช็คชื่อ</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-        {data.checked.map((detail, index) => {
-            return (
-              <TableRow key={index}>
-                <TableCell>{index + 1}</TableCell>
-                <TableCell>{detail.std_id ? detail.std_id : ""}</TableCell>
-                <TableCell>{detail.name ? detail.name : ""}</TableCell>
-                <TableCell>
-                  {detail.checked_date
-                    ? new Date(detail.checked_date).toLocaleTimeString()
-                    : ""}
-                </TableCell>
+      <Drawer>
+        <DrawerTrigger asChild><Button>การเข้าเรียน</Button></DrawerTrigger>
+        <DrawerContent className="max-h-[100dvh]">
+          <DrawerHeader>
+            <DrawerTitle>การเข้าเรียนวิชา: {data.subject}</DrawerTitle>
+            <DrawerDescription>This action cannot be undone.</DrawerDescription>
+          </DrawerHeader>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[100px]">ลำดับ</TableHead>
+                <TableHead>รหัสนักศึกษา</TableHead>
+                <TableHead>ชื่อ</TableHead>
+                <TableHead>เวลาเช็คชื่อ</TableHead>
               </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-    </div>
+            </TableHeader>
+            <TableBody>
+              {data.checked.map((detail, index) => {
+                return (
+                  <TableRow key={index}>
+                    <TableCell>{index + 1}</TableCell>
+                    <TableCell>{detail.std_id ? detail.std_id : ""}</TableCell>
+                    <TableCell>{detail.name ? detail.name : ""}</TableCell>
+                    <TableCell>
+                      {detail.checked_date
+                        ? new Date(detail.checked_date).toLocaleTimeString()
+                        : ""}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+          <DrawerFooter>
+            <DrawerClose asChild>
+              <Button variant="outline">ปิด</Button>
+            </DrawerClose>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
   );
 };
 
@@ -56,7 +73,7 @@ export default function CheckinList({ ...props }) {
 
   return (
     <div>
-        <h1 className="text-xl font-bold">รายการเช็คชื่อ</h1>
+      <h1 className="text-xl font-bold">รายการเช็คชื่อ</h1>
       <Table>
         <TableHeader>
           <TableRow>
@@ -76,15 +93,29 @@ export default function CheckinList({ ...props }) {
                 <TableCell>{checkin.subject}</TableCell>
                 <TableCell>{checkin.room}</TableCell>
                 <TableCell>{checkin.section}</TableCell>
-                <TableCell>{checkin.class_date.toDate().toLocaleDateString()}</TableCell>
+                <TableCell>
+                  {checkin.class_date.toDate().toLocaleDateString()}
+                </TableCell>
                 <TableCell className="text-right">
                   {checkin.checked && (
-                    <Button onClick={() => setStdChecked({checked: checkin.checked, subject: checkin.subject})}>
-                      การเข้าเรียน
-                    </Button>
+                    // <Button >
+                    //   การเข้าเรียน
+                    // </Button>
+                    <ShowDetail
+                      onClick={() => {
+                        setStdChecked({
+                          checked: checkin.checked,
+                          subject: checkin.subject,
+                        });
+                      }}
+                      data={{
+                        checked: checkin.checked,
+                        subject: checkin.subject,
+                      }}
+                    />
                   )}
                   {/* <Button>ถาม-ตอบ</Button> */}
-                  <DrawerComment roomId={checkin.id}/>
+                  <DrawerComment roomId={checkin.id} />
                   <ShowQR code={checkin.id} />
                   <DialogForm
                     title="แก้ไข"
@@ -102,7 +133,6 @@ export default function CheckinList({ ...props }) {
         </TableBody>
       </Table>
       {stdChecked.checked && <ShowDetail data={stdChecked} />}
-      
     </div>
   );
 }

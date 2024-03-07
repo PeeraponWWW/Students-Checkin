@@ -76,7 +76,7 @@ function TextInput({value , onChange}){
     )
 }
 
-export default function Qusetion_Answer({listComment,roomId}){
+export default function Qusetion_Answer({roomId}){
     const [user, setUser] = useState(null);
     const [comment, setComment] = useState("");
 
