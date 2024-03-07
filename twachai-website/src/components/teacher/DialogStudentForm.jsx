@@ -150,7 +150,7 @@ return(
                 <Terminal className="h-4 w-4" />
                 <AlertTitle>แก้ไขรายการเช็คชื่อสำเร็จ</AlertTitle>
               <AlertDescription>
-                รายการเช็คชื่อได้รับการแก้ไขเรียบร้อยแล้ว
+              ข้อมูลได้รับการแก้ไขเรียบร้อยแล้ว
               </AlertDescription>
               </Alert>}
           </div>
