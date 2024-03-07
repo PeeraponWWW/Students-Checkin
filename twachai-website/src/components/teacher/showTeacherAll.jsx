@@ -29,6 +29,9 @@ import {
       <TableCell className="font-medium">{index+1}</TableCell>
       <TableCell>{teachers.name}</TableCell>
       <TableCell>{teachers.email}</TableCell>
+      <TableCell >
+        <TeacherForm title="แก้ไข" des="แก้ไขอาจารย์" name={teachers.name} email={teachers.email} />
+      </TableCell>
     </TableRow>
   )})}
     
