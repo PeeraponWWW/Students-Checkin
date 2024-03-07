@@ -1,1 +1,1 @@
-export const hostname = "https://studentcheckin.artijo.com"
+export const hostname = "https://students-checkin.pages.dev"
