@@ -8,6 +8,7 @@ import {
     TableRow,
   } from "@/components/ui/table"
   import Studentform from "./DialogStudentForm"
+import { DialogForm } from "./DialogForm"
 
   export default function Showallstudent({...props}){
     return(
@@ -21,7 +22,8 @@ import {
       <TableHead>รหัสนักศึกษา</TableHead>
       <TableHead>ชื่อ</TableHead>
       <TableHead>อีเมล</TableHead>
-      <TableHead className="text-right">Section</TableHead>
+      <TableHead>Section</TableHead>
+      <TableHead className="text-right">Action</TableHead>
     </TableRow>
   </TableHeader>
   <TableBody>
@@ -32,7 +34,10 @@ import {
       <TableCell>{students.id}</TableCell>
       <TableCell>{students.name}</TableCell>
       <TableCell>{students.email}</TableCell>
-      <TableCell className="text-right">{students.section}</TableCell>
+      <TableCell>{students.section}</TableCell>
+      <TableCell className="text-right">
+      <Studentform title="แก้ไข" des="แก้ไขข้อมูล" id={students.id} name={students.name} email={students.email} section={students.section} />
+      </TableCell>
     </TableRow>
   )})}
     
