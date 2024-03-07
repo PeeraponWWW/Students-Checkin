@@ -37,6 +37,7 @@ export default function StudentHome() {
   const [stddata, setStddata] = useState(null);
   const [roomdata, setRoomdata] = useState(null);
   const [haveroom, setHaveroom] = useState(null);
+  const [qanda, setQanda] = useState(false);
 
   const handleCheckin = async () => {
     if (!stddata) {
@@ -114,6 +115,19 @@ export default function StudentHome() {
     }
   };
 
+  const handlecheckroom = async (code) => {
+    let q = query(collection(db, "checkin"), where("id", "==", code));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      if (doc.exists()) {
+        setQanda(true);
+      }
+    });
+    if (querySnapshot.size === 0) {
+      setHaveroom(false);
+    }
+  };
+
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -136,17 +150,21 @@ export default function StudentHome() {
   }, []);
 
   useEffect(() => {
-    if(stddata){
+     if(stddata){
       if (checkin) {
         handleCheckinWithQR(checkin);
      }
-  }
+    }
   }, [checkin, stddata]);
   return (
     <div className="min-h-dvh">
       <h1 className="mb-4 text-center text-lg">สำหรับนักเรียน/นักศึกษา</h1>
       <div className="mb-4">
-        <Dialog>
+        {haveroom ? (
+          <div></div>
+        ):(
+          <>
+          <Dialog>
           <DialogTrigger asChild>
             <Button variant="outline">เช็คชื่อเข้าเรียน</Button>
           </DialogTrigger>
@@ -154,7 +172,7 @@ export default function StudentHome() {
             <DialogHeader>
               <DialogTitle>เช็คชื่อ</DialogTitle>
               <DialogDescription>
-                กรุณากรอกรหัสที่ตได้จากครู/อาจารย์
+                กรุณากรอกรหัสห้องเรียนที่ได้จากครู/อาจารย์
               </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
@@ -179,6 +197,43 @@ export default function StudentHome() {
             </DialogFooter>
           </DialogContent>
         </Dialog>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="outline">ถาม-ตอบ</Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>ถาม-ตอบ</DialogTitle>
+              <DialogDescription>
+                กรุณากรอกรหัสห้องเรียนที่ได้จากครู/อาจารย์
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="code" className="text-right">
+                  รหัสห้อง
+                </Label>
+                <Input
+                  id="code"
+                  defaultValue=""
+                  className="col-span-3"
+                  onChange={(e) => {
+                    setCode(e.target.value);
+                    handlecheckroom(e.target.value);
+                  }}
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <DialogClose asChild>
+                {qanda && <DrawerComment roomId={code} />}
+              </DialogClose>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+        </>
+        )}
+        
       </div>
       {haveroom ? (
         <>

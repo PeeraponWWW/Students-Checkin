@@ -1,9 +1,6 @@
 import { useState, useEffect } from "react";
-
-// Ui
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button";
-// Firebase
 import { db, auth } from "../../../firebase";
 import { onSnapshot, setDoc, doc} from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
