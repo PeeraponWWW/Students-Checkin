@@ -25,6 +25,7 @@ import {
   updateDoc,
   Timestamp,
 } from "firebase/firestore";
+import DrawerComment from "./teacher/DrawerComment";
 import { postToFirebase } from "../../helper";
 import { hostname } from "../../config";
 
@@ -180,6 +181,7 @@ export default function StudentHome() {
         </Dialog>
       </div>
       {haveroom ? (
+        <>
         <Alert variant="success">
           <Terminal className="h-4 w-4" />
           <AlertTitle>เช็คชื่อสำเร็จ</AlertTitle>
@@ -189,6 +191,8 @@ export default function StudentHome() {
             {new Date().toLocaleTimeString()} สอนโดย {roomdata.teacher_name}
           </AlertDescription>
         </Alert>
+        <DrawerComment roomId={roomdata.id} />
+      </>
       ) : (
         haveroom === false && (
           <Alert variant="destructive">

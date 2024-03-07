@@ -34,9 +34,7 @@ export default function DrawerComment({roomId}){
     };
     return (
         <Drawer>
-            {/* ปุ่มเอาไว้กดแสดง Drawer */}
             <DrawerTrigger asChild ><Button className="inline-block" onClick={handelQuereyListCommnet}>ถาม-ตอบ</Button></DrawerTrigger>
-            {/* รายละเอียดใน Drawer */}
             <DrawerContent>
                 <div className="h-screen py-2 px-5">
                     <div className="w-100">
@@ -48,7 +46,7 @@ export default function DrawerComment({roomId}){
                     <div className="w-100 px-4">
                         {
                             lCommnet.length > 0 ? (
-                                <div className="h-[400px] overflow-y-auto">
+                                <div className="h-[75dvh] overflow-y-auto">
                                     {
                                         lCommnet[0].map((cm, index) =>
                                             <div key={index} className="bg-slate-100 p-2 mb-4 rounded-sm">
