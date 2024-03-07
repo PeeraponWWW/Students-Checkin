@@ -13,6 +13,10 @@ import {
 import { DialogForm } from "./DialogForm";
 import { ShowQR } from "./ShowQR";
 
+
+// Drawer Q & A 
+import DrawerComment from "./DrawerComment";
+
 export const ShowDetail = ({ data }) => {
   return (
     <div>
@@ -79,7 +83,8 @@ export default function CheckinList({ ...props }) {
                       การเข้าเรียน
                     </Button>
                   )}
-                  <Button>ถาม-ตอบ</Button>
+                  {/* <Button>ถาม-ตอบ</Button> */}
+                  <DrawerComment roomId={checkin.id}/>
                   <ShowQR code={checkin.id} />
                   <DialogForm
                     title="แก้ไข"
