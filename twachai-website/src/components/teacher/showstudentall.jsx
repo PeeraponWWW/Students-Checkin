@@ -7,9 +7,12 @@ import {
     TableHeader,
     TableRow,
   } from "@/components/ui/table"
+  import Studentform from "./DialogStudentForm"
 
   export default function Showallstudent({...props}){
     return(
+        <>
+        <Studentform title="เพิ่มนักเรียน" des="เพิ่มนักเรียน/นักศึกษาของท่าน"/>
         <Table>
   <TableCaption>แสดงชื่อนักเรียน/นักศึกษา</TableCaption>
   <TableHeader>
@@ -35,5 +38,6 @@ import {
     
   </TableBody>
 </Table>
+</>
     )
   }
