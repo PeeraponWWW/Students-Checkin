@@ -26,7 +26,6 @@ export const ShowDetail = ({ data }) => {
           <TableRow>
             <TableHead className="w-[100px]">ลำดับ</TableHead>
             <TableHead>รหัสนักศึกษา</TableHead>
-            <TableHead>Section</TableHead>
             <TableHead>ชื่อ</TableHead>
             <TableHead>เวลาเช็คชื่อ</TableHead>
           </TableRow>
@@ -37,7 +36,6 @@ export const ShowDetail = ({ data }) => {
               <TableRow key={index}>
                 <TableCell>{index + 1}</TableCell>
                 <TableCell>{detail.std_id ? detail.std_id : ""}</TableCell>
-                <TableCell>{detail.section ? detail.section : ""}</TableCell>
                 <TableCell>{detail.name ? detail.name : ""}</TableCell>
                 <TableCell>
                   {detail.checked_date
@@ -65,6 +63,7 @@ export default function CheckinList({ ...props }) {
             <TableHead className="w-[100px]">ลำดับ</TableHead>
             <TableHead>วิชา</TableHead>
             <TableHead>ห้องเรียน</TableHead>
+            <TableHead>กลุ่มเรียน</TableHead>
             <TableHead>วันที่</TableHead>
             <TableHead className="text-right">Action</TableHead>
           </TableRow>
@@ -76,6 +75,7 @@ export default function CheckinList({ ...props }) {
                 <TableCell className="font-medium">{index + 1}</TableCell>
                 <TableCell>{checkin.subject}</TableCell>
                 <TableCell>{checkin.room}</TableCell>
+                <TableCell>{checkin.section}</TableCell>
                 <TableCell>{checkin.class_date.toDate().toLocaleDateString()}</TableCell>
                 <TableCell className="text-right">
                   {checkin.checked && (
@@ -93,6 +93,7 @@ export default function CheckinList({ ...props }) {
                     room={checkin.room}
                     code={checkin.id}
                     date={checkin.class_date.toDate()}
+                    section={checkin.section}
                   />
                 </TableCell>
               </TableRow>

@@ -23,7 +23,6 @@ import {
   where,
   getDocs,
   updateDoc,
-  Timestamp,
 } from "firebase/firestore";
 import DrawerComment from "./teacher/DrawerComment";
 import { postToFirebase } from "../../helper";
@@ -90,8 +89,7 @@ export default function StudentHome() {
         let data = postToFirebase({
           std_id: std.id,
           name: std.name,
-          checked_date: new Date(),
-          section: std.section,
+          checked_date: new Date()
         });
         checked.push(data);
         updateDoc(doc.ref, { checked })

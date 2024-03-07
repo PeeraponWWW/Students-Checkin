@@ -31,6 +31,7 @@ export function DialogForm({...props}) {
     const [subject, setSubject] = useState(""); 
     const [room, setRoom] = useState("")
     const [code, setCode] = useState(makeid(5))
+    const [section, setSection] = useState("")
     const [date, setDate] = useState(new Date())
     const [alert, setAlert] = useState(false)
   
@@ -40,6 +41,7 @@ export function DialogForm({...props}) {
         room: room,
         id: code,
         class_date: date,
+        section: Number(section),
         teacher_email: props.email,
         teacher_name: props.name
       }).then(() => {
@@ -47,6 +49,7 @@ export function DialogForm({...props}) {
         setSubject("")
         setRoom("")
         setCode(makeid(5))
+        setSection("")
         setDate(new Date())
       }).catch((error) => {
         console.error("Error writing document: ", error);
@@ -62,13 +65,15 @@ export function DialogForm({...props}) {
                 updateDoc(doc(db, "checkin", docs.id), {
                     subject: subject,
                     room: room,
-                    class_date: date
+                    class_date: date,
+                    section: Number(section)
                 }).then(() => {
                     console.log("Document successfully updated!");
                     setAlert(true)
                     setSubject("");
                     setRoom("");
                     setCode(makeid(5));
+                    setSection("");
                     setDate(new Date());
                 }).catch((error) => {
                     console.error("Error updating document: ", error);
@@ -106,7 +111,10 @@ export function DialogForm({...props}) {
       if(props.date){
         setDate(props.date)
       }
-    }, [props.subject, props.room, props.code, props.date])
+      if(props.section){
+        setSection(props.section)
+      }
+    }, [props.subject, props.room, props.code, props.date, props.section])
     return (
       <Dialog>
         <DialogTrigger asChild>
@@ -158,6 +166,19 @@ export function DialogForm({...props}) {
                 disabled
                 />}
             
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="section" className="text-right">
+                กลุ่มเรียน
+              </Label>
+              <Input
+                type="number"
+                min="1"
+                onChange={(e) => setSection(e.target.value)}
+                id="section"
+                defaultValue={section}
+                className="col-span-3"
+              />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="date" className="text-right">

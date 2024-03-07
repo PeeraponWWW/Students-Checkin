@@ -21,20 +21,17 @@ export default function Studentform({...props}){
   const [email,setEmail] = useState("")
   const [id,setId] = useState("")
   const [name,setName] = useState("")
-  const [section,setSection] = useState("")
   const [alert, setAlert] = useState(false)
   
   const handlesavestudentform = () =>{
     addDoc(collection(db,"students"),{
       id:id,
       email:email,
-      name:name,
-      section:Number(section)
+      name:name
     }).then(()=>{
       setEmail("")
       setId("")
       setName("")
-      setSection("")
     }).catch((error)=>{
       console.error("Error writing document: ", error)
     })
@@ -47,13 +44,11 @@ export default function Studentform({...props}){
         updateDoc(doc(db, "students", docs.id), {
             name:name,
             email:email,
-            section:Number(section)
         }).then(() => {
             console.log("Document successfully updated!");
             setAlert(true)
             setName("");
             setEmail("");
-            setSection("");
         }).catch((error) => {
             console.error("Error updating document: ", error);
         });
@@ -79,8 +74,7 @@ export default function Studentform({...props}){
     if(props.id){setId(props.id)}
     if(props.name){setName(props.name)}
     if(props.email){setEmail(props.email)}
-    if(props.section){setSection(props.section)}
-  },[props.id,props.name,props.email,props.section])
+  },[props.id,props.name,props.email])
 return(
     <Dialog>
         <DialogTrigger asChild>
@@ -134,17 +128,6 @@ return(
                 onChange={(e) => setEmail(e.target.value)}
               />
             
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="section" className="text-right">
-                section
-              </Label>
-              <Input
-                id="section"
-                defaultValue={section}
-                className="col-span-3"
-                onChange={(e) => setSection(e.target.value)}
-              />
             </div>
             {alert && <Alert variant="success">
                 <Terminal className="h-4 w-4" />
