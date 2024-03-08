@@ -22,6 +22,7 @@ import {
 import { DialogForm } from "./DialogForm";
 import { ShowQR } from "./ShowQR";
 import DrawerComment from "./DrawerComment";
+import { dateoptions } from "../../../helper";
 
 export const ShowDetail = ({ data }) => {
   return (
@@ -30,7 +31,7 @@ export const ShowDetail = ({ data }) => {
         <DrawerContent className="max-h-[100dvh]">
           <DrawerHeader>
             <DrawerTitle>การเข้าเรียนวิชา: {data.subject}</DrawerTitle>
-            <DrawerDescription>This action cannot be undone.</DrawerDescription>
+            <DrawerDescription>กลุ่มเรียน: {data.section} วันที่ {data.date.toDate().toLocaleDateString('en-US',dateoptions).replace(/(\d+)\/(\d+)\/(\d+)/, '$2/$1/$3')}</DrawerDescription>
           </DrawerHeader>
           <Table>
             <TableHeader>
@@ -38,7 +39,7 @@ export const ShowDetail = ({ data }) => {
                 <TableHead className="w-[100px]">ลำดับ</TableHead>
                 <TableHead>รหัสนักศึกษา</TableHead>
                 <TableHead>ชื่อ</TableHead>
-                <TableHead>เวลาเช็คชื่อ</TableHead>
+                <TableHead className="text-right">เวลาเช็คชื่อ</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -48,9 +49,9 @@ export const ShowDetail = ({ data }) => {
                     <TableCell>{index + 1}</TableCell>
                     <TableCell>{detail.std_id ? detail.std_id : ""}</TableCell>
                     <TableCell>{detail.name ? detail.name : ""}</TableCell>
-                    <TableCell>
+                    <TableCell className="text-right">
                       {detail.checked_date
-                        ? new Date(detail.checked_date).toLocaleTimeString()
+                        ? new Date(detail.checked_date).toLocaleDateString('en-US',dateoptions).replace(/(\d+)\/(\d+)\/(\d+)/, '$2/$1/$3')+ "\tเวลา " + new Date(detail.checked_date).toLocaleTimeString('en-US', { hour12: false })+" น."
                         : ""}
                     </TableCell>
                   </TableRow>
@@ -95,7 +96,7 @@ export default function CheckinList({ ...props }) {
                 <TableCell>{checkin.room}</TableCell>
                 <TableCell>{checkin.section}</TableCell>
                 <TableCell>
-                  {checkin.class_date.toDate().toLocaleDateString()}
+                  {checkin.class_date.toDate().toLocaleDateString('en-US',dateoptions).replace(/(\d+)\/(\d+)\/(\d+)/, '$2/$1/$3')}
                 </TableCell>
                 <TableCell className="text-right flex gap-2 flex-wrap justify-end">
                   {checkin.checked && (
@@ -104,11 +105,15 @@ export default function CheckinList({ ...props }) {
                         setStdChecked({
                           checked: checkin.checked,
                           subject: checkin.subject,
+                          section: checkin.section,
+                          date: checkin.class_date,
                         });
                       }}
                       data={{
                         checked: checkin.checked,
                         subject: checkin.subject,
+                        section: checkin.section,
+                        date: checkin.class_date,
                       }}
                     />
                   )}

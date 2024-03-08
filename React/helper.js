@@ -15,3 +15,5 @@ export function postToFirebase(origObj) {
     let newObj = JSON.parse(string);
     return newObj;
   }
+
+export const dateoptions = { day: '2-digit', month: '2-digit', year: 'numeric' };;

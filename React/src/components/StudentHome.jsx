@@ -27,6 +27,7 @@ import {
 import DrawerComment from "./teacher/DrawerComment";
 import { postToFirebase } from "../../helper";
 import { hostname } from "../../config";
+import { dateoptions } from "../../helper";
 
 export default function StudentHome() {
   const [searchParams] = useSearchParams();
@@ -235,16 +236,16 @@ export default function StudentHome() {
       </div>
       {haveroom ? (
         <>
-        <Alert variant="success">
+        <Alert variant="success" className="mb-4">
           <Terminal className="h-4 w-4" />
           <AlertTitle>เช็คชื่อสำเร็จ</AlertTitle>
           <AlertDescription>
             ขอบคุณที่เข้าเรียน วิชา {roomdata.subject} ห้อง {roomdata.room}{" "}
-            วันที่ {roomdata.date} เข้าเรียนเวลา{" "}
-            {new Date().toLocaleTimeString()} สอนโดย {roomdata.teacher_name}
+            วันที่ {new Date().toLocaleDateString('en-US',dateoptions).replace(/(\d+)\/(\d+)\/(\d+)/, '$2/$1/$3')} เข้าเรียนเวลา{" "}
+            {new Date().toLocaleTimeString('en-US', { hour12: false })} น. สอนโดย {roomdata.teacher_name}
           </AlertDescription>
         </Alert>
-        <DrawerComment roomId={roomdata.id} />
+        <DrawerComment roomId={roomdata.id}/>
       </>
       ) : (
         haveroom === false && (
