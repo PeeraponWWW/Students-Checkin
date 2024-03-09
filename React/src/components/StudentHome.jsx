@@ -33,6 +33,7 @@ export default function StudentHome() {
   const [searchParams] = useSearchParams();
   const [checkin, setCheckin] = useState(searchParams.get('checkin'));
 
+  const [user, setUser] = useState(null);
   const [code, setCode] = useState("");
   const [stddata, setStddata] = useState(null);
   const [roomdata, setRoomdata] = useState(null);
@@ -40,12 +41,36 @@ export default function StudentHome() {
   const [qanda, setQanda] = useState(false);
 
   const handleCheckin = async () => {
-    if (!stddata) {
-      console.error("Student data is not available yet.");
-      return;
-    }
     let q = query(collection(db, "checkin"), where("id", "==", code));
     const querySnapshot = await getDocs(q);
+    if (!stddata) {
+      querySnapshot.forEach((doc) => {
+        if (doc.exists()) {
+          let room = doc.data();
+          let checked = room.checked ? room.checked : [];
+          let data = postToFirebase({
+            std_id: "unknown",
+            name: user.displayName,
+            checked_date: new Date(),
+          });
+          checked.push(data);
+          updateDoc(doc.ref, { checked })
+            .then(() => {
+              console.log("Document successfully updated!");
+              setRoomdata(room);
+              setHaveroom(true);
+            })
+            .catch((error) => {
+              setHaveroom(false);
+              console.error("Error updating document: ", error);
+            });
+        }
+      });
+      if (querySnapshot.size === 0) {
+        setHaveroom(false);
+      }
+      return;
+    }
     querySnapshot.forEach((doc) => {
       if (doc.exists()) {
         let room = doc.data();
@@ -55,7 +80,6 @@ export default function StudentHome() {
           std_id: std.id,
           name: std.name,
           checked_date: new Date(),
-          section: std.section,
         });
         checked.push(data);
         updateDoc(doc.ref, { checked })
@@ -77,7 +101,31 @@ export default function StudentHome() {
 
   const handleCheckinWithQR = async (code) => {
     if (!stddata) {
-      console.error("Student data is not available yet.");
+      querySnapshot.forEach((doc) => {
+        if (doc.exists()) {
+          let room = doc.data();
+          let checked = room.checked ? room.checked : [];
+          let data = postToFirebase({
+            std_id: "unknown",
+            name: user.displayName,
+            checked_date: new Date(),
+          });
+          checked.push(data);
+          updateDoc(doc.ref, { checked })
+            .then(() => {
+              console.log("Document successfully updated!");
+              setRoomdata(room);
+              setHaveroom(true);
+            })
+            .catch((error) => {
+              setHaveroom(false);
+              console.error("Error updating document: ", error);
+            });
+        }
+      });
+      if (querySnapshot.size === 0) {
+        setHaveroom(false);
+      }
       return;
     }
     let q = query(collection(db, "checkin"), where("id", "==", code));
@@ -130,6 +178,7 @@ export default function StudentHome() {
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
+      setUser(user);
       if (user) {
         let q = query(
           collection(db, "students"),
