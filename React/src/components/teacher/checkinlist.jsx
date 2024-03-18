@@ -31,7 +31,7 @@ export const ShowDetail = ({ data }) => {
         <DrawerContent className="max-h-[100dvh]">
           <DrawerHeader>
             <DrawerTitle>การเข้าเรียนวิชา: {data.subject}</DrawerTitle>
-            <DrawerDescription>กลุ่มเรียน: {data.section} วันที่ {data.date.toDate().toLocaleDateString('en-US',dateoptions).replace(/(\d+)\/(\d+)\/(\d+)/, '$2/$1/$3')}</DrawerDescription>
+            <DrawerDescription>กลุ่มเรียน: {data.section} วันที่ {data.date.toDate().toLocaleDateString('en-US',dateoptions).replace(/(\d+)\/(\d+)\/(\d+)/, '$2/$1/$3')} เข้าเรียนแล้ว {Object.keys(data.checked).length} คน</DrawerDescription>
           </DrawerHeader>
           <Table>
             <TableHeader>
