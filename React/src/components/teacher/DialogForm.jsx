@@ -256,30 +256,9 @@ export function DialogForm({ ...props }) {
                 <Button onClick={handleupdatecheckin} type="button">
                   แก้ไข
                 </Button>
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button>ลบ</Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>
-                        คุณต้องการลบห้อง {subject} ใช่หรือไม่
-                      </AlertDialogTitle>
-                      <AlertDialogDescription>
-                        หากคุณลบห้อง {subject} แล้ว
-                        ข้อมูลทั้งหมดที่เกี่ยวข้องกับห้องนี้จะถูกลบทั้งหมด
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>ยกเลิก</AlertDialogCancel>
-                      <AlertDialogAction
-                        onClick={() => handledeletecheckin(code)}
-                      >
-                        ลบ
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
+                <Button onClick={() => handledeletecheckin(code)} variant="danger" type="button">
+                  ลบ
+                </Button>
               </div>
             )}
           </DialogClose>

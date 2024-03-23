@@ -169,29 +169,9 @@ export default function TeacherForm({ ...props }) {
                 <Button type="button" onClick={handelupdateteacher}>
                   แก้ไข
                 </Button>
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button>ลบ</Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>
-                        คุณต้องการลบครู/อาจารย์ {name} ใช่หรือไม่
-                      </AlertDialogTitle>
-                      <AlertDialogDescription>
-                        หากลบแล้วข้อมูลจะหายไปอย่างถาวร ตุณจะไม่สามารถกู้คืนได้
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>ยกเลิก</AlertDialogCancel>
-                      <AlertDialogAction
-                        onClick={() => handeldeleteteacher(email)}
-                      >
-                        ลบ
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
+                <Button onClick={() => handeldeleteteacher(email)} type="button" variant="danger">
+                  ลบ
+                </Button>
               </div>
             )}
           </DialogClose>

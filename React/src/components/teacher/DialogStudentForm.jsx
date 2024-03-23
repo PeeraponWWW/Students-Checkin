@@ -181,27 +181,7 @@ export default function Studentform({ ...props }) {
                 <Button onClick={handelupdatestudent} type="button">
                   แก้ไข
                 </Button>
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button>ลบ</Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>คุณต้องการลบ {name}</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        หากลบแล้วข้อมูลจะหายไปอย่างถาวร
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>ยกเลิก</AlertDialogCancel>
-                      <AlertDialogAction
-                        onClick={() => handeldeletestudent(id)}
-                      >
-                        ลบ
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
+                <Button variant="danger" onClick={() => handeldeletestudent(id)}>ลบ</Button>
               </div>
             )}
           </DialogClose>
